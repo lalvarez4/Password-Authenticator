@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class Authenticator{
 
@@ -14,7 +15,7 @@ public class Authenticator{
 
         switch(menu){
             case 1:
-                //addUser();
+                addUser();
 
                 break;
             case 2:
@@ -25,19 +26,36 @@ public class Authenticator{
 
     }
 
-    void addUser(){
+    static int addUser(){
         String username;
         String password;
         Scanner kb = new Scanner(System.in);
+        Random random = new Random();
 
         System.out.print("Enter user name: ");
         username = kb.nextLine();
         System.out.print("Enter password: ");
         password = kb.nextLine();
 
+        StringBuilder strPassword = new StringBuilder(password);
+
+        char[] saltTable = {'!', '@', '#', '$', '%', '^', '&', '*'};
+
+        StringBuilder salt = new StringBuilder();
+
+        for(int i = 0; i < 4; i++){
+            salt.append(saltTable[random.nextInt(7)]);
+        }
+
+        strPassword.append(salt);
+
+        System.out.println(strPassword.toString());
+
         User newUser = new User(username, password);
 
         password.hashCode();
+
+        return 0;
     }
 
     void removeUser(){
