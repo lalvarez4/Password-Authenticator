@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.Random;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Authenticator houses the main function of the Password-Authenticator app. This app takes in a username and valid
@@ -17,6 +18,7 @@ public class Authenticator{
      */
     public static void main(String []args) throws IOException {
         Scanner kb = new Scanner(System.in);
+        ArrayList<User> users = new ArrayList<User>();
 
         while(true){
             System.out.println("Password Authenticator");
@@ -53,7 +55,7 @@ public class Authenticator{
         int passwordHash; // the hashcode generated from password+salt
         StringBuilder strPassword; // StringBuilder object from password
         StringBuilder salt = new StringBuilder(); // StringBuilder object for salt
-        FileWriter users = new FileWriter("users.txt");
+        FileWriter credentials = new FileWriter("credentials.txt");
         Scanner kb = new Scanner(System.in);
         Random random = new Random();
 
@@ -79,16 +81,16 @@ public class Authenticator{
 
         User newUser = new User(username, password, salt.toString(), passwordHash); // Generates a User object
 
-        users.append("0000" + "," + username + "," + password + "," + salt + "," + passwordHash);
-        users.close();
+        credentials.append("0000" + "," + username + "," + password + "," + salt + "," + passwordHash);
+        credentials.close();
 
         System.out.println();
         return 0;
     }
 
     /**
-     * Creates ArrayList<User> from users.txt and then searches to find the element with the same username as entered.
-     * Removes that object from ArrayList<User> then rewrites users.txt.
+     * Creates ArrayList<User> from credentials.txt and then searches to find the element with the same username as entered.
+     * Removes that object from ArrayList<User> then rewrites credentials.txt.
      * @return 0
      */
     static int removeUser(){
@@ -106,7 +108,7 @@ public class Authenticator{
     }
 
     /**
-     * Takes a username and password. Checks to see if a username in ArrayList<User> (composed from users.txt) matches
+     * Takes a username and password. Checks to see if a username in ArrayList<User> (composed from credentials.txt) matches
      * that username, pulls the salt and hash from that. If username matches, appends the supplied salt to entered
      * password, hashes the result and compares to the stored hash. If they match, user is successfully logged in.
      * @return 0
@@ -127,6 +129,18 @@ public class Authenticator{
 
         StringBuilder strPassword = new StringBuilder(password);
 
+
+        return 0;
+    }
+
+    /**
+     * Populates ArrayList<User> from credentials.txt
+     * @param credentialsPath
+     * @return
+     * @throws IOException
+     */
+    static int loadUsers(String credentialsPath)throws IOException{
+        FileWriter credentials = new FileWriter(credentialsPath);
 
         return 0;
     }
