@@ -5,12 +5,14 @@ public class User {
     String username;
     String password;
     String salt;
-    String passwordHash;
+    int passwordHash;
 
 
-    public User(String username, String password){
+    public User(String username, String password, String salt, int passwordHash){
         this.username = username;
         this.password = password;
+        this.salt = salt;
+        this.passwordHash = passwordHash;
     }
 
     String getUserID(){
@@ -25,7 +27,7 @@ public class User {
         return this.salt;
     }
 
-    String passwordHash(){
+    int passwordHash(){
         return passwordHash;
     }
 }
