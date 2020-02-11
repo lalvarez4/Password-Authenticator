@@ -50,9 +50,9 @@ public class Authenticator{
     static int addUser() throws IOException{
         String username;
         String password;
-        int passwordHash;
-        StringBuilder strPassword;
-        StringBuilder salt = new StringBuilder();
+        int passwordHash; // the hashcode generated from password+salt
+        StringBuilder strPassword; // StringBuilder object from password
+        StringBuilder salt = new StringBuilder(); // StringBuilder object for salt
         FileWriter users = new FileWriter("users.txt");
         Scanner kb = new Scanner(System.in);
         Random random = new Random();

@@ -1,5 +1,9 @@
 package com.company;
 
+/**
+ * Stores relevant attributes for a user such as the associated password. Includes helper functions.
+ * @author
+ */
 public class User {
     String userID;
     String username;
@@ -15,18 +19,34 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
+    /**
+     * Returns userID
+     * @return
+     */
     String getUserID(){
         return userID;
     }
 
+    /**
+     * Returns username
+     * @return
+     */
     String getUsername(){
         return username;
     }
 
+    /**
+     * Returns salt
+     * @return
+     */
     String salt(){
         return this.salt;
     }
 
+    /**
+     * Returns passwordHash
+     * @return
+     */
     int passwordHash(){
         return passwordHash;
     }
