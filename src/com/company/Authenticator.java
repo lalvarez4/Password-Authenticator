@@ -45,7 +45,7 @@ public class Authenticator{
     /**
      * Takes username and password data, creates a salt then hashes the password-salt combo. Then creates a User
      * object. Finally, stores username, salt, and hash in a csv file.
-     * @return
+     * @return 0
      */
     static int addUser() throws IOException{
         String username;
@@ -62,7 +62,7 @@ public class Authenticator{
         System.out.print("Enter user name: ");
         username = kb.nextLine();
         System.out.print("Enter password: ");
-        password = kb.nextLine();
+        password = passwordCheck();
 
         strPassword = new StringBuilder(password); // Generates a StringBuilder object from password
 
@@ -89,7 +89,7 @@ public class Authenticator{
     /**
      * Creates ArrayList<User> from users.txt and then searches to find the element with the same username as entered.
      * Removes that object from ArrayList<User> then rewrites users.txt.
-     * @return
+     * @return 0
      */
     static int removeUser(){
         String username;
@@ -109,7 +109,7 @@ public class Authenticator{
      * Takes a username and password. Checks to see if a username in ArrayList<User> (composed from users.txt) matches
      * that username, pulls the salt and hash from that. If username matches, appends the supplied salt to entered
      * password, hashes the result and compares to the stored hash. If they match, user is successfully logged in.
-     * @return
+     * @return 0
      */
     static int signIn(){
         String username;
@@ -126,8 +126,80 @@ public class Authenticator{
         password = kb.nextLine();
 
         StringBuilder strPassword = new StringBuilder(password);
-        
+
 
         return 0;
+    }
+
+    /**
+     * Walks user through entering a valid password.
+     * @return password
+     */
+    static String passwordCheck(){
+        boolean isValid = false;
+        String password;
+        Scanner kb = new Scanner(System.in);
+        do {
+            boolean has8thru16 = false; //size check
+            boolean hasUpper = false;
+            boolean hasLower = false;
+            boolean hasSpecial = false; //has any character from String specialCharacters check
+            boolean hasStringPassword = false;
+            boolean hasSpace = true;
+
+            String specialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~"; //stores special characters
+            String raspberryPiPassword = "Password"; //Password shouldn't contain 'password'
+
+            password = kb.nextLine();
+
+            //If the password contains between 8 and 16 characters, it passes the size check
+            if (password.length() >= 8 && password.length() <= 16) {
+                has8thru16 = true;
+            }
+
+            /*If the password is not equal to an all lowercase version of itself, it means the original version contains
+            an upper case character*/
+            if (password != password.toLowerCase()) {
+                hasUpper = true;
+            }
+
+            //Same as above if statement, except for lower case check
+            if (password != password.toUpperCase()) {
+                hasLower = true;
+            }
+
+            /*Converts String specialCharacters into String[] specialAt. Then checks through the array to see if
+            String password contains any element from the array. Solves the special character check*/
+            for (int i = 0; i < specialCharacters.length(); i++) {
+                String[] specialAt = specialCharacters.split("");
+                if (password.contains(specialAt[i])) {
+                    hasSpecial = true;
+                }
+            }
+
+            //Checks if the password contains a multi-case variation of the string 'password'
+            if (password.contains(raspberryPiPassword.toLowerCase()) || password.contains(raspberryPiPassword.toUpperCase())
+                    || password.contains(raspberryPiPassword)) {
+                hasStringPassword = true;
+            }
+
+            if (password.indexOf(" ") == -1) {
+                hasSpace = false;
+            }
+
+            //Final check, makes sure each requirement has been met
+            if (has8thru16 && hasUpper && hasLower && hasSpecial && !hasStringPassword && !hasSpace) {
+                isValid = true;
+            } else {
+                //If password is invalid, returns this message and continues looping
+                System.out.println("Password not valid. Please try again.");
+                System.out.println("Password must contain 8-16 characters, contain <at least> 1 uppercase value,\n" +
+                        "1 lower case value, 1 special character, cannot contain 'password', and contains 0\n" +
+                        "spaces." );
+            }
+
+        }while(!isValid);
+
+        return password;
     }
 }
